@@ -96,7 +96,7 @@
                             <td><span>Nháp</span></td>
                         </th:block>
                         <td th:text="${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></td>
-                        <td th:text="${#dates.format(post.publishedAt, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(post.modifiedAt, 'dd-MM-yyyy')}"></td>
                         <td class="actions">
                             <a th:href="@{/admin/posts/{slug}/{id}(id=${post.id},slug=${post.slug})}" class="on-default edit-row"><i class="fas fa-pencil-alt"></i></a>
                             <a href="#" th:data-id="${post.id}" class="on-default remove-row btn-delete-post"><i class="far fa-trash-alt"></i></a>
