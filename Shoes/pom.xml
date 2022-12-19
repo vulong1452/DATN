@@ -8,7 +8,7 @@
         <version>2.4.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.vuhien</groupId>
+    <groupId>com.datn</groupId>
     <artifactId>application</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>application</name>
