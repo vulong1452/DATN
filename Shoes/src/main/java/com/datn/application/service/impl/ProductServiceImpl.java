@@ -1,9 +1,7 @@
 package com.datn.application.service.impl;
 
 import com.datn.application.config.Contant;
-import com.datn.application.entity.Product;
-import com.datn.application.entity.ProductSize;
-import com.datn.application.entity.Promotion;
+import com.datn.application.entity.*;
 import com.datn.application.model.dto.DetailProductInfoDTO;
 import com.datn.application.model.dto.PageableDTO;
 import com.datn.application.model.dto.ProductInfoDTO;
@@ -23,6 +21,7 @@ import com.datn.application.repository.OrderRepository;
 import com.datn.application.repository.ProductRepository;
 import com.datn.application.repository.ProductSizeRepository;
 import com.datn.application.repository.PromotionRepository;
+import com.github.slugify.Slugify;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,11 +120,33 @@ public class ProductServiceImpl implements ProductService {
             throw new BadRequestException("Ảnh sản phẩm trống!");
         }
 
-        Product result = ProductMapper.toProduct(createProductRequest);
-        result.setId(id);
-        result.setModifiedAt(new Timestamp(System.currentTimeMillis()));
+        Product product1 = product.get();
+        product1.setName(createProductRequest.getName());
+        product1.setDescription(createProductRequest.getDescription());
+        product1.setPrice(createProductRequest.getPrice());
+        product1.setSalePrice(createProductRequest.getSalePrice());
+        product1.setImages(createProductRequest.getImages());
+        product1.setImageFeedBack(createProductRequest.getFeedBackImages());
+        product1.setStatus(createProductRequest.getStatus());
+        //Gen slug
+        Slugify slug = new Slugify();
+        product1.setSlug(slug.slugify(createProductRequest.getName()));
+        //Brand
+        Brand brand = new Brand();
+        brand.setId(createProductRequest.getBrandId());
+        product1.setBrand(brand);
+        //Category
+        ArrayList<Category> categories = new ArrayList<>();
+        for (Integer id1 : createProductRequest.getCategoryIds()) {
+            Category category = new Category();
+            category.setId(id1);
+            categories.add(category);
+        }
+        product1.setCategories(categories);
+        product1.setId(id);
+        product1.setModifiedAt(new Timestamp(System.currentTimeMillis()));
         try {
-            productRepository.save(result);
+            productRepository.save(product1);
         } catch (Exception e) {
             throw new InternalServerException("Có lỗi khi sửa sản phẩm!");
         }

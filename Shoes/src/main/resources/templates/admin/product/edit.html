@@ -408,6 +408,8 @@
                 },
                 salePrice: {
                     required: true,
+                    priceCom: true,
+
                 },
                 image: {
                     required: true,
@@ -429,6 +431,8 @@
                 },
                 salePrice: {
                     required: "Giá bán sản phẩm trống. Vui lòng nhập giá bán sản phẩm!",
+                    priceCom: "Giá bán phải lớn hơn giá nhập sản phẩm. Vui lòng nhập lại giá bán!",
+
                 },
                 image: {
                     required: "Ảnh sản phẩm trống. Vui lòng chọn ảnh cho sản phẩm!",
@@ -515,6 +519,11 @@
                 }
             });
         })
+        $.validator.addMethod("priceCom", function (value, element) {
+            let price = parseInt($("#price").val());
+            let check = parseInt(value) < price
+            return this.optional(element) || !check;
+        }, "Giá bán phải lớn hơn giá nhập sản phẩm. Vui lòng nhập lại giá bán!")
     </script>
 </th:block>
 </body>
