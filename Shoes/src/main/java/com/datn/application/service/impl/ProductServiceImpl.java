@@ -121,13 +121,14 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Product product1 = product.get();
-        product1.setName(createProductRequest.getName());
         product1.setDescription(createProductRequest.getDescription());
         product1.setPrice(createProductRequest.getPrice());
         product1.setSalePrice(createProductRequest.getSalePrice());
         product1.setImages(createProductRequest.getImages());
         product1.setImageFeedBack(createProductRequest.getFeedBackImages());
         product1.setStatus(createProductRequest.getStatus());
+        product1.setName(createProductRequest.getName());
+
         //Gen slug
         Slugify slug = new Slugify();
         product1.setSlug(slug.slugify(createProductRequest.getName()));
