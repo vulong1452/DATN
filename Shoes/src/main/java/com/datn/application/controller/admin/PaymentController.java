@@ -62,7 +62,7 @@ public class PaymentController {
     }
     @GetMapping(URL_PAYPAL_CANCEL)
     public String cancelPay(){
-        return "redirect:/tai-khoan/lich-su-giao-dich/";
+        return "redirect:/tai-khoan/lich-su-giao-dich/" ;
     }
     @GetMapping(URL_PAYPAL_SUCCESS)
     public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){

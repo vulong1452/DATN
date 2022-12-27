@@ -83,13 +83,7 @@
                                             <div class="size"><span th:text="${item.sizeUs}"></span>US | <span th:text="${item.sizeVn}"></span>VN | <span th:text="${item.sizeCm}"></span>CM</div>
                                         </div>
                                     </div>
-                                    <div class="price bid-price">
-<!--                                        <span class="text-price" th:text="${item.totalPrice}"></span> &#x20AB;-->
-                                        <form method="post" th:action="@{/pay}">
-                                            <input type="text" th:value="${item.totalPrice}" name="price" readonly/>
-                                            <button type="submit"> Payment with Paypal </button>
-                                        </form>
-                                    </div>
+                                    <div class="price bid-price"><span class="text-price" th:text="${item.totalPrice}"></span> &#x20AB;</div>
                                 </div>
                             </div>
                             <!-- Item Small-->
