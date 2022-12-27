@@ -25,9 +25,9 @@ public class PaymentController {
     private Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private PaypalService paypalService;
-//    @GetMapping("/")
+//    @GetMapping("/payment")
 //    public String index(){
-//        return "index";
+//        return "shop/index";
 //    }
     @PostMapping("/pay")
     public String pay(HttpServletRequest request, @RequestParam("price") double price ){
@@ -50,7 +50,7 @@ public class PaymentController {
         } catch (PayPalRESTException e) {
             log.error(e.getMessage());
         }
-        return "redirect:/";
+        return "shop/index";
     }
     @GetMapping(URL_PAYPAL_CANCEL)
     public String cancelPay(){
@@ -61,11 +61,11 @@ public class PaymentController {
         try {
             Payment payment = paypalService.executePayment(paymentId, payerId);
             if(payment.getState().equals("approved")){
-                return "success";
+                return "shop/order_history";
             }
         } catch (PayPalRESTException e) {
             log.error(e.getMessage());
         }
-        return "redirect:/";
+        return "shop/order_history";
     }
 }
