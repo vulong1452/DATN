@@ -67,7 +67,12 @@
                             <div class="total-price-wrapper price">Thành tiền<span class="total-price"><span class="text-price" th:text="${order.totalPrice}"></span> &#x20AB;</span></div>
                         </div>
                     </div>
-                    <button th:if="${canCancel} == true" class="btn btn-primary red-btn cancel-btn" th:data-order="${order.id}">Hủy đơn hàng</button>
+<!--                    <button th:if="${canCancel} == true" class="btn btn-primary red-btn cancel-btn" th:data-order="${order.id}">Hủy đơn hàng</button>-->
+                    <form method="post" th:action="@{/pay}" style="display: flex; margin-left: 193px;">
+                        <input type="text" th:value="${order.totalPrice}" name="price" readonly style="display: none" />
+                        <button th:if="${canCancel} == true" class="btn btn-primary red-btn cancel-btn" th:data-order="${order.id}" style="margin-right: 10px">Hủy đơn hàng</button>
+                        <button th:if="${order.getStatus() == 1}" type="submit" class="btn btn-primary red-btn "> Thanh toán bằng Paypal</button>
+                    </form>
                 </div>
                 <div class="item-small">
                     <div class="order-number-wrapper">Mã đơn <span class="order-number" th:text="'#'+${order.id}"></span></div>
