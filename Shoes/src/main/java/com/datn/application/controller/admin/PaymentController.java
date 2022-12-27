@@ -2,6 +2,11 @@ package com.datn.application.controller.admin;
 
 import com.datn.application.config.PaypalPaymentIntent;
 import com.datn.application.config.PaypalPaymentMethod;
+import com.datn.application.entity.Order;
+import com.datn.application.entity.User;
+import com.datn.application.model.request.CreateOrderRequest;
+import com.datn.application.security.CustomUserDetails;
+import com.datn.application.service.OrderService;
 import com.datn.application.service.PaypalService;
 import com.datn.application.utils.PayPalUtil;
 import com.paypal.api.payments.Links;
@@ -9,10 +14,10 @@ import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -25,12 +30,15 @@ public class PaymentController {
     private Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private PaypalService paypalService;
+
+    @Autowired
+    private OrderService orderService;
 //    @GetMapping("/")
 //    public String index(){
 //        return "index";
 //    }
     @PostMapping("/pay")
-    public String pay(HttpServletRequest request, @RequestParam("price") double price ){
+    public String pay(HttpServletRequest request, @RequestParam(defaultValue = "0") double price ){
         String cancelUrl = PayPalUtil.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
         String successUrl = PayPalUtil.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
         try {
@@ -50,22 +58,22 @@ public class PaymentController {
         } catch (PayPalRESTException e) {
             log.error(e.getMessage());
         }
-        return "redirect:/";
+        return "redirect:";
     }
     @GetMapping(URL_PAYPAL_CANCEL)
     public String cancelPay(){
-        return "cancel";
+        return "redirect:/tai-khoan/lich-su-giao-dich/";
     }
     @GetMapping(URL_PAYPAL_SUCCESS)
     public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
         try {
             Payment payment = paypalService.executePayment(paymentId, payerId);
             if(payment.getState().equals("approved")){
-                return "success";
+                return "redirect:/tai-khoan/lich-su-giao-dich/";
             }
         } catch (PayPalRESTException e) {
             log.error(e.getMessage());
         }
-        return "redirect:/";
+        return "redirect:/tai-khoan/lich-su-giao-dich/";
     }
 }
