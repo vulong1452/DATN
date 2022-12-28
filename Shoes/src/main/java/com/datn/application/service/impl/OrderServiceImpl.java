@@ -161,12 +161,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findOrderById(long id) {
-        Optional<Order> order = orderRepository.findById(id);
-        if (order.isEmpty()) {
+        Order order = orderRepository.findById(id).get();
+        if (order == null) {
             throw new NotFoundException("Đơn hàng không tồn tại");
         }
-        return order.get();
+        order.setStatus(Contant.PAYMENT_STATUS);
+        orderRepository.save(order);
+        return order;
     }
+
 
     @Override
     public void updateStatusOrder(UpdateStatusOrderRequest updateStatusOrderRequest, long orderId, long userId) {
@@ -187,7 +190,7 @@ public class OrderServiceImpl implements OrderService {
             throw new BadRequestException("Trạng thái đơn hàng không hợp lệ");
         }
         //Cập nhật trạng thái đơn hàng
-        if (order.getStatus() == Contant.ORDER_STATUS) {
+        if (order.getStatus() == Contant.ORDER_STATUS || order.getStatus() == Contant.PAYMENT_STATUS) {
             //Đơn hàng ở trạng thái chờ lấy hàng
             if (updateStatusOrderRequest.getStatus() == Contant.ORDER_STATUS) {
                 order.setReceiverPhone(updateStatusOrderRequest.getReceiverPhone());
@@ -283,9 +286,11 @@ public class OrderServiceImpl implements OrderService {
         } else if (order.getStatus() == Contant.COMPLETED_STATUS) {
             order.setStatusText("Đã giao hàng");
         } else if (order.getStatus() == Contant.CANCELED_STATUS) {
-            order.setStatusText("Đơn hàng đã trả lại");
-        } else if (order.getStatus() == Contant.RETURNED_STATUS) {
             order.setStatusText("Đơn hàng đã hủy");
+        } else if (order.getStatus() == Contant.RETURNED_STATUS) {
+            order.setStatusText("Đơn hàng đã trả lại");
+        }else if (order.getStatus() == Contant.PAYMENT_STATUS){
+            order.setStatusText("Đơn hàng đã thanh toán");
         }
 
         for (int i = 0; i < Contant.SIZE_VN.size(); i++) {

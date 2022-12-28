@@ -55,7 +55,7 @@
             <div class="main-content">
                 <div class="nav-tab">
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                        <li class="nav-item"><div class="nav-link active order-status" data-status="1">Chờ lấy hàng</div></li>
+                        <li class="nav-item"><div class="nav-link active order-status" data-status="16">Chờ lấy hàng</div></li>
                         <li class="nav-item"><div class="nav-link order-status" data-status="2">&Dstrok;ang giao h&agrave;ng</div></li>
                         <li class="nav-item"><div class="nav-link order-status" data-status="3">&Dstrok;&atilde; giao h&agrave;ng</div></li>
                         <li class="nav-item"><div class="nav-link order-status" data-status="4">&Dstrok;ơn hàng đã trả lại</div></li>
@@ -113,23 +113,84 @@
 
 <th:block id="js-resources">
     <script>
+        $(document).ready(function () {
+            function trend1(){
+                return $.ajax({
+                    url: '/api/get-order-list?status=' + 1,
+                    type: 'GET',
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data){
+                    }
+                });
+            }
+            function trend2(){
+                return $.ajax({
+                    url: '/api/get-order-list?status=' + 6,
+                    type: 'GET',
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data){
+                    }
+                });
+            }
+
+            $.when( trend1(), trend2()).done(function(trend1_data, trend2_data){
+                let all;
+                all = [...trend1_data[0], ...trend2_data[0]];
+                // $('.nav-link.active').toggleClass("active");
+                // $('.order-status[data-status=' + status + ']').toggleClass("active");
+                showListOrder(all);
+                formatMoney();
+            });
+        })
         formatMoney();
         $('.order-status').click(function() {
             let status = $(this).data('status');
-            $.ajax({
-                url: '/api/get-order-list?status='+status,
-                type: 'GET',
-                contentType: "application/json; charset=utf-8",
-                success: function(data) {
-                    $('.nav-link.active').toggleClass("active");
-                    $('.order-status[data-status='+status+']').toggleClass("active");
-                    showListOrder(data);
-                    formatMoney();
-                },
-                error: function(data) {
-                    toastr.warning(data.responseJSON.message);
+            let listStatus;
+            if(status === 16){
+                function trend1(){
+                    return $.ajax({
+                        url: '/api/get-order-list?status=' + 1,
+                        type: 'GET',
+                        contentType: "application/json; charset=utf-8",
+                        success: function(data){
+                        }
+                    });
                 }
-            });
+                function trend2(){
+                    return $.ajax({
+                        url: '/api/get-order-list?status=' + 6,
+                        type: 'GET',
+                        contentType: "application/json; charset=utf-8",
+                        success: function(data){
+                        }
+                    });
+                }
+
+                $.when( trend1(), trend2()).done(function(trend1_data, trend2_data){
+                    let all;
+                    all = [...trend1_data[0], ...trend2_data[0]];
+                    console.log(all)
+                    $('.nav-link.active').toggleClass("active");
+                    $('.order-status[data-status=' + status + ']').toggleClass("active");
+                    showListOrder(all);
+                    formatMoney();
+                });
+            }else{
+                $.ajax({
+                    url: '/api/get-order-list?status=' + status,
+                    type: 'GET',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('.nav-link.active').toggleClass("active");
+                        $('.order-status[data-status=' + status + ']').toggleClass("active");
+                        showListOrder(data);
+                        formatMoney();
+                    },
+                    error: function (data) {
+                        toastr.warning(data.responseJSON.message);
+                    }
+                });
+            }
         })
 
         function showListOrder(orders) {

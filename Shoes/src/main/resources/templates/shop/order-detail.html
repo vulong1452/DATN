@@ -68,11 +68,14 @@
                         </div>
                     </div>
 <!--                    <button th:if="${canCancel} == true" class="btn btn-primary red-btn cancel-btn" th:data-order="${order.id}">Hủy đơn hàng</button>-->
-                    <form method="post" th:action="@{/pay}" style="display: flex; margin-left: 193px;">
-                        <input type="text" th:value="${order.totalPrice}" name="price" readonly style="display: none" />
-                        <button th:if="${canCancel} == true" class="btn btn-primary red-btn cancel-btn" th:data-order="${order.id}" style="margin-right: 10px">Hủy đơn hàng</button>
-                        <button th:if="${order.getStatus() == 1}" type="submit" class="btn btn-primary red-btn "> Thanh toán bằng Paypal</button>
+                    <div style="display: flex; margin-left: 193px;">
+                    <button th:if="${canCancel} == true" class="btn btn-primary red-btn cancel-btn" th:data-order="${order.id}" style="margin-right: 1px; height: 59px">Hủy đơn hàng</button>
+                    <form method="post" th:action="@{/pay}" >
+                        <input type="text" th:value="${order.totalPrice}"  name="price" readonly style="display: none" />
+                        <input type="text" th:value="${order.id}"  name="id" readonly style="display: none" />
+                        <button th:if="${order.getStatus() == 1}" type="submit" class="btn btn-primary red-btn " > Thanh toán bằng Paypal</button>
                     </form>
+                    </div>
                 </div>
                 <div class="item-small">
                     <div class="order-number-wrapper">Mã đơn <span class="order-number" th:text="'#'+${order.id}"></span></div>
