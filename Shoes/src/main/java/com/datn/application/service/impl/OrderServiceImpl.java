@@ -280,7 +280,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if (order.getStatus() == Contant.ORDER_STATUS) {
-            order.setStatusText("Chờ lấy hàng");
+            order.setStatusText("Đơn hàng chưa thanh toán");
         } else if (order.getStatus() == Contant.DELIVERY_STATUS) {
             order.setStatusText("Đang giao hàng");
         } else if (order.getStatus() == Contant.COMPLETED_STATUS) {
