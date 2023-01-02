@@ -113,6 +113,7 @@
                         <td th:text="${order.receiverPhone}"></td>
                         <td>
                             <span th:if="${order.status} == 1" class="badge badge-warning">Chờ lấy hàng</span>
+                            <span th:if="${order.status} == 6" class="badge badge-warning">Chờ lấy hàng</span>
                             <span th:if="${order.status} == 2" class="badge badge-primary">Đang giao hàng</span>
                             <span th:if="${order.status} == 3" class="badge badge-success">Đã giao hàng</span>
                             <span th:if="${order.status} == 4" class="badge badge-danger">Đơn hàng bị trả lại</span>

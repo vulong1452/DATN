@@ -165,7 +165,6 @@ public class OrderServiceImpl implements OrderService {
         if (order == null) {
             throw new NotFoundException("Đơn hàng không tồn tại");
         }
-        order.setStatus(Contant.PAYMENT_STATUS);
         orderRepository.save(order);
         return order;
     }
