@@ -16,7 +16,7 @@ public class Contant {
     public static final int LIMIT_POST = 10;
     public static final int LIMIT_POST_SHOP = 8;
     public static final int LIMIT_POST_RELATED = 5;
-    public static final int LIMIT_USER = 15;
+    public static final int LIMIT_USER = 5;
 
     //Product
     public static final int LIMIT_PRODUCT_SELL = 10;

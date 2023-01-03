@@ -6,6 +6,7 @@ import com.datn.application.config.PaypalPaymentMethod;
 import com.datn.application.entity.Order;
 import com.datn.application.entity.User;
 import com.datn.application.model.request.CreateOrderRequest;
+import com.datn.application.repository.OrderRepository;
 import com.datn.application.security.CustomUserDetails;
 import com.datn.application.service.OrderService;
 import com.datn.application.service.PaypalService;
@@ -37,6 +38,9 @@ public class PaymentController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private OrderRepository orderRepository;
 //    @GetMapping("/")
 //    public String index(){
 //        return "index";
@@ -75,6 +79,7 @@ public class PaymentController {
             Payment payment = paypalService.executePayment(paymentId, payerId);
             Order order = orderService.findOrderById(idOrder);
             order.setStatus(Contant.PAYMENT_STATUS);
+            orderRepository.save(order);
             if(payment.getState().equals("approved")){
                 return "redirect:/tai-khoan/lich-su-giao-dich/";
             }
