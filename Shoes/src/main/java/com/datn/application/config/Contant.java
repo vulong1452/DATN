@@ -23,8 +23,8 @@ public class Contant {
     public static final int LIMIT_PRODUCT_NEW = 8;
     public static final int LIMIT_PRODUCT_VIEW = 8;
     public static final int LIMIT_PRODUCT_RELATED = 8;
-    public static final int LIMIT_PRODUCT_SHOP = 20;
-    public static final int LIMIT_PRODUCT_SEARCH = 20;
+    public static final int LIMIT_PRODUCT_SHOP = 5;
+    public static final int LIMIT_PRODUCT_SEARCH = 5;
 
     //Post
     public static final int LIMIT_POST_NEW = 5;
